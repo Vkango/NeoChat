@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>NeoChat</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script type="module" src="scripts/app.js" defer></script>
+
+</head>
+<body>
+
+    <div class="chatlist">
+        <div class="chat-item">
+            <img class="avatar" src="src/avatar.jpg" alt="avatar" width="36" height="36" style="padding: 10px;">
+            <span class="message-display">
+                <div class="username">申必大家庭</div>
+                <div class="message-">Message</div>
+                <span class="message-display-time">21:09</span>
+                <span class="message-count">99+</span>
+            </span>
+        </div>
+    </div>
+    <div class="chat">
+        <div class="group-navibar">
+            <span class="group-name">申必大家庭</span>
+            <span class="group-member">(30)</span>
+        </div>
+
+        <div class="messages">
+            <!--
+            <div class="message-item">
+                <img class="avatar" src="src/avatar.jpg" alt="avatar" width="24" height="24">
+                <span class="username">UserName<span class="level">管理员</span></span>
+                <div class="message-text">9a6f0c1c3d873e3dcd0f0b72:78f530c0926589aed40fa43fe95596ffceafc52215deeb3fa668bee557bc687c1364
+                    解密消息：申必加密测试</div>
+            </div>
+            <div class="message-item-self">
+                <img class="avatar" src="src/avatar.jpg" alt="avatar" width="24" height="24">
+                <span class="username"><span class="level">管理员</span>UserName</span>
+                <div class="message-text">9a6f0c1c3d873e3dcd0f0b72:78f530c0926589aed40fa43fe95596ffceafc52215deeb3fa668bee557bc687c1364
+                    解密消息：申必加密测试</div>
+            </div>-->
+        </div>
+        <div class="input-box">
+            <input type="text" id="message" placeholder="输入消息">
+            <button id="sendButton" onclick="sendMessage()" style="display: inline-block;">发送</button>
+        </div>
+    </div>
+
+    <div class="group-info">
+        <div class="notice-board">群公告<br><button>点击开所有成员🎁</button></div>
+        <div class="group-member-list">群聊成员 30</div>
+    </div>
+
+    <div class="navi-bar">
+        <img class="avatar" src="src/avatar.jpg" alt="avatar" width="24" height="24">
+        <span class="username" style="top: -12px">UserName</span>
+        <span class="searchbox">
+            <input type="text" placeholder="搜索">
+        </span>
+    </div>
+</body>
+</html>
