@@ -8,23 +8,23 @@
 
 </head>
 <body>
-
     <div class="chatlist">
-        <div class="chat-item">
-            <img class="avatar" src="src/avatar.jpg" alt="avatar" width="36" height="36" style="padding: 10px;">
-            <span class="message-display">
-                <div class="username">申必大家庭</div>
-                <div class="message-">Message</div>
-                <span class="message-display-time">21:09</span>
-                <span class="message-count">99+</span>
-            </span>
+        <div class="chat-items">
+            <div class="chat-item">
+                <span class="message-display">
+                    <img class="avatar" src="src/avatar.jpg" alt="avatar" >
+                    <div class="username">群聊</div>
+                    <div class="message-">Message</div>
+                    <span class="message-time">星期二</span>
+                    <span class="message-count">99+</span>
+                </span>
+            </div>
         </div>
     </div>
     <div class="chat">
         <div class="group-navibar">
-            <span class="group-name">申必大家庭</span>
-            <span class="group-member">(30)</span>
-        </div>
+            <span class="group-name">赤石群 (30)</span>
+      </div>
 
         <div class="messages">
             <!--
@@ -42,6 +42,10 @@
             </div>-->
         </div>
         <div class="input-box">
+            <div class="input-box-buttons">
+                <img class="icon" src="src/icons/expression_16.svg" alt="expression">
+                <img class="icon" src="src/icons/screenshot_16.svg" alt="expression">
+            </div>
             <input type="text" id="message" placeholder="输入消息">
             <button id="sendButton" onclick="sendMessage()" style="display: inline-block;">发送</button>
         </div>
@@ -54,7 +58,11 @@
 
     <div class="navi-bar">
         <img class="avatar" src="src/avatar.jpg" alt="avatar" width="24" height="24">
-        <span class="username" style="top: -12px">UserName</span>
+
+        <div class="navi-buttons">
+            <img class="icon" src="src/icons/message_16.svg" alt="message">
+            <img class="icon" src="src/icons/user_16.svg" alt="message">
+        </div>
         <span class="searchbox">
             <input type="text" placeholder="搜索">
         </span>
