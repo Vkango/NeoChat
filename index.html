@@ -10,36 +10,19 @@
 <body>
     <div class="chatlist">
         <div class="chat-items">
-            <div class="chat-item">
-                <span class="message-display">
-                    <img class="avatar" src="src/avatar.jpg" alt="avatar" >
-                    <div class="username">群聊</div>
-                    <div class="message-">Message</div>
-                    <span class="message-time">星期二</span>
-                    <span class="message-count">99+</span>
-                </span>
-            </div>
+
         </div>
     </div>
     <div class="chat">
         <div class="group-navibar">
+            <span class="connect-status">
+                <span class="circle-green"></span>
+                <span>NeoChat · Online</span>
+            </span>
             <span class="group-name">赤石群 (30)</span>
       </div>
 
         <div class="messages">
-            <!--
-            <div class="message-item">
-                <img class="avatar" src="src/avatar.jpg" alt="avatar" width="24" height="24">
-                <span class="username">UserName<span class="level">管理员</span></span>
-                <div class="message-text">9a6f0c1c3d873e3dcd0f0b72:78f530c0926589aed40fa43fe95596ffceafc52215deeb3fa668bee557bc687c1364
-                    解密消息：申必加密测试</div>
-            </div>
-            <div class="message-item-self">
-                <img class="avatar" src="src/avatar.jpg" alt="avatar" width="24" height="24">
-                <span class="username"><span class="level">管理员</span>UserName</span>
-                <div class="message-text">9a6f0c1c3d873e3dcd0f0b72:78f530c0926589aed40fa43fe95596ffceafc52215deeb3fa668bee557bc687c1364
-                    解密消息：申必加密测试</div>
-            </div>-->
         </div>
         <div class="input-box">
             <div class="input-box-buttons">
@@ -66,6 +49,12 @@
         <span class="searchbox">
             <input type="text" placeholder="搜索">
         </span>
+    </div>
+
+    <div class="status-bar">
+        <span style="font-weight: bold;">NeoChat<br></span>
+        <span class="status-bar-item">WebSocket: 127.0.0.1:1148<br></span>
+        <span class="status-bar-item">0 message</span>
     </div>
 </body>
 </html>
