@@ -109,6 +109,20 @@ body
     height: 65px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+.json-card-app-name
+{
+    opacity: 0.5;
+    padding-left: 5px;
+}
+.json-card-preview
+{
+    border-radius: 5px;
+}
+.json-card-desc
+{
+    font-size: 18px;
+    padding: 5px 0;
+}
 .group-name
 {
     position: absolute;
@@ -292,7 +306,14 @@ button:hover
     line-height: 25px;
     font-size: 18px;
 }
-
+.single-line
+{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    word-break: break-all;
+}
 .message-item-self
 {
     position: relative;
@@ -455,4 +476,13 @@ button:hover
 .connect-status:hover + .status-bar
 {
     display: block;
+}
+.replybox
+{
+    opacity:0.5;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(255,255,255,0.1);
+    border-left: 3px solid rgba(255, 255, 255, 1);
+    margin-bottom: 5px;
 }

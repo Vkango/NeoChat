@@ -48,6 +48,7 @@ function ProcessNewMessage(event) {
         username: message.sender.card || message.sender.nickname,
         level: message.sender.role + " | 点击开合",
         avatar: 'https://q1.qlogo.cn/g?b=qq&nk=' + message.user_id + '&s=640',
+        id: message.real_id,
         raw_json: message
     });
 
@@ -133,30 +134,108 @@ function displayMessage(message) {
         const isScrolledToBottom = messagesContainer.scrollHeight - messagesContainer.clientHeight <= messagesContainer.scrollTop + 1;
         let message_html = ""
         for (let i = 0; i < message.text.length; i++) {
+
             if (message.text[i].type == "text") {
                 message_html += message.text[i].data.text
-            }
+            };
+
+
             if (message.text[i].type == "image") {
                 message_html += `<img id="group-image" src=${message.text[i].data.url} referrerpolicy="no-referrer">`
+            };
+
+
+            if (message.text[i].type == "face") {
+                message_html += `<img src="./src/faces/${message.text[i].data.id}.png" width="24px" referrerpolicy="no-referrer">`
+            };
+
+
+            if (message.text[i].type == "json") {
+                let json_card_info = JSON.parse(message.text[i].data.data);
+                message_html += `    <div class="json-card">
+        <img src="${json_card_info.meta.detail_1.icon}" width="16px">
+        <span class="json-card-app-name">${json_card_info.meta.detail_1.title}</span>
+        <div class="json-card-desc">${json_card_info.meta.detail_1.desc}</div>
+        <img class="json-card-preview" src="https://${json_card_info.meta.detail_1.preview}" referrerpolicy="no-referrer" width="250px">
+    </div>`;
+            };
+
+
+            if (message.text[i].type == 'reply'){
+                // 回复消息只支持引用部分的text，image，face以及json/forward的消息提示
+                console.log("reply mesg");
+                message_html += `<div class="replybox">`;
+                let quoteMsg = GetMessage (message.text[i].data.id);
+                message_html += `<div>
+                <img src="${quoteMsg.avatar}" alt="avatar" style="width: 16px; height: 16px; border-radius: 16px;">`;
+                message_html += `<span style="padding-left: 10px; font-size: 14px; position: relative; top: -3px">${quoteMsg.username}</span>
+                </div>`;
+                for (let i = 0; i < quoteMsg.text.length; i++) {
+                    if (quoteMsg.text[i].type == "text") {
+                        message_html += quoteMsg.text[i].data.text
+                    }
+                    if (quoteMsg.text[i].type == "image") {
+                        message_html += `<img id="group-image" src=${quoteMsg.text[i].data.url} referrerpolicy="no-referrer">`
+                    }
+                    if (quoteMsg.text[i].type == "face") {
+                        message_html += `<img src="./src/faces/${quoteMsg.text[i].data.id}.png" width="24px" referrerpolicy="no-referrer">`
+                    }
+                    if (quoteMsg.text[i].type == "json") {
+                        message_html += "[JSON卡片]";
+                    }
+                    if (quoteMsg.text[i].type == "forward"){
+                        message_html += "[合并转发] 聊天记录";
+                    }
+                    
+                };
+                message_html += `</div>`;
+            };
+
+
+            if (message.text[i].type == 'forward') {
+                let forward_info = message.text[i].data.content;
+                let message_content = "";
+                for (let i = 0; i < 4 && i < forward_info.length; i++) {
+                    if (!('sender' in forward_info[i])) {
+                        forward_info[i].sender = { card: "User" };
+                    }
+                    message_content += `<div class="single-line" style="max-width: 200px; opacity: 0.8"; padding: 5px 10px; padding-left: 20px>` + (forward_info[i].sender.card || forward_info[i].sender.nickname || "User") + ": " + forward_info[i].raw_message + "\n" + `</div>`;
+                }
+                message_html += `
+                    <div class="forward-card">
+                        <span class="json-card-app-name">合并转发 | ${forward_info[0].message_type}</span>
+                        <div class="json-card-desc">${message_content}<div style="opacity: 0.5; margin-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 5px">查看 ${forward_info.length} 条转发消息</div></div>
+                    </div>`;
             }
-        }
-        
+
+
         const messageElement = document.createElement('div');
         messageElement.className = 'message-item';
         messageElement.innerHTML = `
-            <img class="avatar" src="${message.avatar}" alt="avatar" width="24" height="24">
-            <span class="username">${message.username}<span class="level">${message.level}</span></span>
-            <div class="message-text">${message_html}</div>
-        `;
+        <img class="avatar" src="${message.avatar}" width="24" height="24">
+        <span class="username">${message.username}<span class="level">${message.level}</span></span>
+        <div class="message-text">${message_html}</div>
+    `
         messagesContainer.appendChild(messageElement);
         if (isScrolledToBottom) {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-    } else {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        };
+    }
+    }
+    else {
         console.error('无法找到 messages 容器');
     }
 }
-
+function GetMessage (id){
+    const messages = message_list[currentGroupId] || [];
+    for (let i = 0; i < messages.length; i++){
+        if (messages[i].id == id){
+            return messages[i];
+        }
+    }
+    return {text: [{type: 'text', data: {text: '引用消息不存在'}}]};
+    // current group
+}
 document.getElementById('sendButton').addEventListener('click', sendMessage);
 document.addEventListener('DOMContentLoaded', function() {
     const connectStatus = document.querySelector('.connect-status');
