@@ -1,0 +1,141 @@
+.json-card-app-name
+{
+    opacity: 0.5;
+    padding-left: 5px;
+}
+.json-card-preview
+{
+    border-radius: 5px;
+}
+.json-card-desc
+{
+    font-size: 18px;
+    padding: 5px 0;
+}
+.message-item
+{
+    position: relative;
+    width: 100%
+}
+.message-item .avatar
+{
+    position: relative;
+    width: 50px;
+    height: 50px;
+    left: 15px;
+    top: 15px;
+}
+.message-item .username
+{
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    left: 80px;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.5);
+}
+.message-item .level
+{
+    display: inline-block;
+    font-size: 14px;
+    background-color: rgba(46, 157, 248, 0.2);
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-left: 10px;
+    color: rgb(0, 101, 202);
+    top: -5px;
+}
+.message-item .message-text
+{
+    background-color: rgba(255, 255, 255, 0.1);
+    position: relative;
+    left: 80px;
+    padding: 10px;
+    top: -15px;
+    width: fit-content;
+    max-width: calc(100% - 180px);
+    border-radius: 5px;
+    position: relative;
+    word-wrap: break-word;
+    word-break: break-all;
+    line-height: 25px;
+    font-size: 18px;
+}
+.message-item-self
+{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.message-item-self .avatar
+{
+    position: absolute;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+}
+.message-item-self .username
+{
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute;
+    top: 0px;
+    right: 70px;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.5);
+}
+.message-item-self .level
+{
+    display: inline-block;
+    font-size: 14px;
+    background-color: rgba(46, 157, 248, 0.2);
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-right: 10px;
+    color: rgb(0, 101, 202);
+    top: -5px;
+
+
+
+}
+.message-text
+{
+    user-select: text;
+}
+.message-item-self .message-text
+{
+
+    align-self: right;
+    background-color: rgba(0, 102, 204, 0.6);
+    position: absolute;
+    right: 80px;
+    padding: 10px;
+    top: 30px;
+    width: fit-content;
+    max-width: calc(100% - 180px);
+    border-radius: 5px;
+    position: relative;
+    word-wrap: break-word;
+    word-break: break-all;
+    line-height: 25px;
+    font-size: 18px;
+}
+#group-image
+{
+    max-width: 300px;
+    border-radius: 5px;
+}
+.notify
+{
+    display: flex;
+    justify-content: flex-center;
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}

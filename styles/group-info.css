@@ -1,0 +1,22 @@
+.notice-board
+{
+    padding: 17px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.group-info
+{
+    background-color: rgba(0, 0 ,0, 0);
+    position: absolute;
+    right: 0px;
+    width: 165px;
+    top: 65px;
+    height: calc(100vh - 65px);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 19px;
+}
+.group-member-list
+{
+    position: relative;
+    max-height: 100%;
+    padding: 10px;
+}

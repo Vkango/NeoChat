@@ -1,0 +1,20 @@
+.input-box input
+{
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0; 
+    font-size: 19px;
+    top: 35px;
+    position: absolute;
+    left: 20px;
+    width: calc(100% - 50px);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.input-box button{
+    position: absolute;
+    right: 10px;
+    top: 35px;
+    border: 0;
+    color: white;
+    font-size: 18px;
+}
