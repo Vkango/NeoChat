@@ -1,25 +1,20 @@
+// 管理消息收发
 import { decrypt, encrypt } from './crypto.js';
-
-const websocket = new WebSocket('ws://127.0.0.1:1148');
+import { WSMessage } from './ws.js';
+import { getCurrentTime } from './helper.js';
+import { API } from './api.js';
 const message_list = {}; // 用于保存消息的对象，以群号区分
 const chatlist = {}; // 用于管理消息列表
-function getCurrentTime() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    return `${hours}:${minutes}`;
-}
-websocket.onopen = function() {
-    console.log('WebSocket连接已建立');
-};
+let websocket = new WSMessage('ws://127.0.0.1:1148', ProcessNewMessage)
+let Api = new API('http://127.0.0.1:1145', websocket);
 
-websocket.onmessage = function(event) {
-    console.log("message_list", message_list);
-    console.log("chat_list", chatlist);
+function ProcessNewMessage(event) {
     const message = JSON.parse(event.data);
+    // 获取群信息WS消息到来
     if (message.data && 'group_name' in message.data){
         // WS响应获取群信息
         chatlist[message.data.group_id].name = message.data.group_name;
+        console.log("new message");
         // 更新DOM
         const chatListContainer = document.getElementsByClassName('chat-items')[0];
         const groupElement = document.createElement('div');
@@ -35,9 +30,10 @@ websocket.onmessage = function(event) {
                 </span>
             `;
         chatListContainer.appendChild(groupElement);
-        
         return;
     }
+
+
     // 更新全局消息集
     let group_id = message.group_id;
     if (!message_list[group_id]) {
@@ -61,13 +57,7 @@ websocket.onmessage = function(event) {
         chatlist[group_id].unread_count = 1; //新消息还没有读
         chatlist[group_id].send_time = getCurrentTime();
         // 发送WS请求获取群信息
-        websocket.send(JSON.stringify({
-            action: "get_group_info",
-            params: {
-                group_id: group_id,
-                no_cache: true
-            }
-        }));
+        Api.GetGroupInfo(group_id);
         // 稍后需要适配收到消息的逻辑
     }
     else{
@@ -90,13 +80,10 @@ websocket.onmessage = function(event) {
     });
 };
 
-websocket.onerror = function(error) {
-    console.error('WebSocket错误:', error);
-};
 
-websocket.onclose = function() {
-    console.log('WebSocket连接已关闭');
-};
+
+
+
 
 async function sendMessage() {
     const inputField = document.getElementById('message');
@@ -108,18 +95,7 @@ async function sendMessage() {
         sendToApi(0, encryptedMessage + "\n解密消息：" + await decrypt(encryptedMessage, password));
     }
 }
-function sendToApi(group_id, message) {
-    fetch('http://127.0.0.1:1145/send_group_msg', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ group_id: group_id, message: message }),
-    })
-    .then(response => response.json())
-    .then(data => console.log('API响应:', data))
-    .catch(error => console.error('API错误:', error));
-}
+
 
 
 function displayMessage(message) {
@@ -131,7 +107,7 @@ function displayMessage(message) {
                 message_html += message.text[i].data.text
             }
             if (message.text[i].type == "image") {
-                message_html += `<img id="group-image" src=${message.text[i].data.url}>`
+                message_html += `<img id="group-image" src=${message.text[i].data.url} referrerpolicy="no-referrer">`
             }
         }
         

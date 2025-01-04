@@ -348,6 +348,14 @@ button:hover
     position: relative;
     top: 0px;
 }
+#circle-green
+{
+    background-color: rgb(114, 255, 114)
+}
+#circle-red
+{
+    background-color: red;
+}
 .message-text
 {
     user-select: text;

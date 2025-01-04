@@ -1,3 +1,4 @@
+// 消息加解密函数
 export async function encrypt(text, password) {
     const key = await deriveKey(password);
     const iv = crypto.getRandomValues(new Uint8Array(12)); // 生成随机IV
