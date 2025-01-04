@@ -118,12 +118,12 @@ body
 }
 .message-display
 {
-    position: relative;
+    position: absolute;
     display: inline-block;
-    top: -12px;
     line-height: 1.5;
     right: 0px;
     width: 100%;
+    margin-top: 5px;
 }
 .message-display .username
 {
@@ -191,6 +191,11 @@ body
     top: 10px;
     width: 56px;
     height: 56px;
+}
+.chat-items
+{
+    display: flex;
+    flex-direction: column;
 }
 .group-info
 {

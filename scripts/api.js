@@ -5,7 +5,7 @@ export class API{
         this.ws = wsObj;
     };
     SendGroupMessage(group_id, message) {
-        fetch('http://127.0.0.1:1145/send_group_msg', {
+        fetch(this.httpUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
