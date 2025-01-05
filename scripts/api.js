@@ -58,4 +58,21 @@ export class API{
             throw error;
         }
     };
+    async GetGroupMemberListHTTP(group_id) {
+        try {
+            const response = await fetch(this.httpUrl + "/get_group_member_list", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ group_id: group_id}),
+            });
+            const data = await response.json();
+            console.log('API响应:', data);
+            return data;
+        } catch (error) {
+            console.error('API错误:', error);
+            throw error;
+        }
+    };
 };

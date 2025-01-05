@@ -7,16 +7,52 @@
 {
     background-color: rgba(0, 0 ,0, 0);
     position: absolute;
+    display: flex;
     right: 0px;
     width: 165px;
     top: 65px;
     height: calc(100vh - 65px);
     border-left: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 19px;
+    flex-direction: column;
+
 }
-.group-member-list
+.member-list
 {
+    padding: 17px 10px;
     position: relative;
-    max-height: 100%;
+    height: calc(100%);
     padding: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.member-list-item
+{
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+.member-list-item:hover
+{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.member-list .member-name
+{
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    left: 45px;
+    width: calc(100% - 55px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.notice-content
+{
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 25px;
 }

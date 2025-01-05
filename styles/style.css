@@ -3,6 +3,7 @@ html, body{
     height: 100%;
     margin: 0;
     padding: 0;
+    scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0);
     user-select: none;
 }
 body
@@ -15,6 +16,18 @@ body
         rgba(0, 0, 0, 1);
     color: white;
 }
+#logo
+{
+    opacity: 0.5;
+    position: absolute;
+    align-self: center;
+    left: calc(275px + 50% - 150px - 275px / 2);
+    top: calc(50% - 116px / 2);
+}
+.UI{
+    display: none;
+}
+
 .searchbox input
 {
     background-color: rgba(255, 255, 255, 0);

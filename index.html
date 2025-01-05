@@ -14,31 +14,38 @@
     <script type="module" src="scripts/app.js" defer></script>
 
 </head>
-<body>
+<body> 
+    <img class="icon" id="logo" src="src/NeoChat.svg" alt="NeoChat" width="300px">
     <div class="chatlist">
         <div class="chat-items">
 
         </div>
     </div>
+    <div class="UI">
+        <div class="chat">
+            <div class="group-navibar">
 
-    <div class="chat">
-        <div class="group-navibar">
+                <span class="group-name">未知群聊</span>
+                <div class="group-info">
+                    <div class="notice-board">公告<div class="notice-content">死妈JS你再给我undefined我就给你爹操死了</div></div>
+                    <div class="member-list">成员列表
 
-            <span class="group-name">未知群聊</span>
-      </div>
-
-        <div class="messages">
+                    </div>
+                </div>
         </div>
-        <div class="input-box">
-            <div class="input-box-buttons">
-                <img class="icon" src="src/icons/expression_16.svg" alt="expression">
-                <img class="icon" src="src/icons/screenshot_16.svg" alt="expression">
+
+            <div class="messages">
             </div>
-            <input type="text" id="message" placeholder="输入消息">
-            <button id="sendButton" style="display: inline-block;">发送</button>
+            <div class="input-box">
+                <div class="input-box-buttons">
+                    <img class="icon" src="src/icons/expression_16.svg" alt="expression">
+                    <img class="icon" src="src/icons/screenshot_16.svg" alt="expression">
+                </div>
+                <input type="text" id="message" placeholder="输入消息">
+                <button id="sendButton" style="display: inline-block;">发送</button>
+            </div>
         </div>
     </div>
-
 
 
     <div class="navi-bar">

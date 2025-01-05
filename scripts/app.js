@@ -38,6 +38,7 @@ function ProcessNewMessage(event) {
         groupElement.className = 'chat-item';
         groupElement.id = message.data.group_id;
         groupElement.style.order = 0;
+        groupElement.style.hover = 'rgba(255,255,255,0.1)';
         groupElement.innerHTML = `
                 <span class="message-display">
                     <img class="avatar" src="https://p.qlogo.cn/gh/${message.data.group_id}/${message.data.group_id}/100" alt="avatar" >
@@ -47,7 +48,9 @@ function ProcessNewMessage(event) {
                     <span class="message-count">${chatlist[message.data.group_id].unread_count}</span>
                 </span>
             `;
-        groupElement.addEventListener('click', () => switchChat(message.data.group_id));
+        groupElement.addEventListener('click', () => {        document.getElementById('logo').style.display = 'none';
+            document.getElementsByClassName('UI')[0].style.display = 'block';
+            switchChat(message.data.group_id)});
         chatListContainer.appendChild(groupElement);
         ReorderChatList(group_id);
         return;
@@ -109,18 +112,50 @@ function ProcessNewMessage(event) {
 };
 };
 function switchChat(group_id) {
-    if (currentGroupId != 0) {document.getElementById(currentGroupId).style.backgroundColor = 'rgba(0, 102, 204, 0)';}
-    chatlist[group_id].unread_count = 0;
-    document.getElementById(group_id).getElementsByClassName('message-count')[0].style = 'display:none';
-    currentGroupId = group_id;
-    document.getElementsByClassName('group-name')[0].innerText = chatlist[group_id].name;
-    document.getElementById(group_id).style.backgroundColor = 'rgba(0, 102, 204, 0.4)';
-    const messagesContainer = document.getElementsByClassName('messages')[0];
-    messagesContainer.innerHTML = '';
-    const messages = message_list[group_id] || [];
-    messages.forEach(message => {
-        displayMessage(message);
-    });
+        if (currentGroupId == group_id) {
+        return;
+    }
+
+    if (currentGroupId != 0) {
+        
+
+        document.getElementById(currentGroupId).style.backgroundColor = 'rgba(0, 102, 204, 0)';}
+        chatlist[group_id].unread_count = 0;
+        document.getElementById(group_id).getElementsByClassName('message-count')[0].style.display = 'none';
+        
+        currentGroupId = group_id;
+        document.getElementsByClassName('group-name')[0].innerText = chatlist[group_id].name;
+        document.getElementById(group_id).style.backgroundColor = 'rgba(0, 102, 204, 0.4)';
+        
+        const messagesContainer = document.getElementsByClassName('messages')[0];
+        messagesContainer.innerHTML = '';
+        const messages = message_list[group_id] || [];
+        messages.forEach(message => {
+            displayMessage(message);
+        })
+        displayMemberList(group_id);
+;
+}
+async function displayMemberList(group_id) {
+    try {
+        const message = await Api.GetGroupMemberListHTTP(group_id);
+        let messagesContainer = document.getElementsByClassName('member-list')[0];
+        messagesContainer.innerHTML = '成员列表';
+        message.data.forEach(member => {
+            const memberItem = document.createElement('div');
+            memberItem.className = `member-list-item`;
+            memberItem.innerHTML = `<img class="avatar" src="https://q1.qlogo.cn/g?b=qq&nk=${member.user_id}&s=640" alt="avatar" width="24" height="24">
+                        <span class="member-name">${member.nickname}</span>
+                    `
+            messagesContainer.appendChild(memberItem);
+        });
+        
+        document.getElementById('self-avatar1').src = 'https://q1.qlogo.cn/g?b=qq&nk=' + self_id + '&s=640';
+    }
+    catch (error) {
+        console.error('error:', error);
+    };
+
 }
 
 function ReorderChatList(currentGroupId) {
@@ -250,7 +285,6 @@ function displayMessage(message) {
     const messageElement = document.createElement('div');
     console.log('displaymsg', message.user_id, self_id);
     messageElement.className = (message.user_id == self_id) ? 'message-item-self' : 'message-item';
-    messageElement.innerHTML = 
     messageElement.innerHTML = (message.user_id == self_id) ? `
     <img class="avatar" src="${message.avatar}" width="24" height="24">
     <span class="level">${message.level}</span><span class="username">${message.username}</span>
@@ -289,4 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
     connectStatus.addEventListener('mouseleave', function() {
         statusBar.style.display = 'none';
     });
+
+
 });
+
