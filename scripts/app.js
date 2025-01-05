@@ -8,8 +8,24 @@ const chatlist = {}; // 用于管理消息列表
 let websocket = new WSMessage('ws://127.0.0.1:1148', ProcessNewMessage)
 let Api = new API('http://127.0.0.1:1145', websocket);
 let currentGroupId = 0;
+let self_id = 0;
+ProcessSelfInfo();
+// 获取自身信息
+async function ProcessSelfInfo(){
+    try {
+        const message = await Api.GetSelfInfo();
+        self_id = message.data.user_id;
+        document.getElementById('self-avatar1').src = 'https://q1.qlogo.cn/g?b=qq&nk=' + self_id + '&s=640';
+    }
+    catch (error) {
+        console.error('获取自身信息失败:', error);
+    };
+}
+
 function ProcessNewMessage(event) {
     const message = JSON.parse(event.data);
+    // 自己是谁？
+
     let group_id = message.group_id;
     ////////////////////////////////////////////////////////////
     // 获取群信息WS消息到来
@@ -48,8 +64,8 @@ function ProcessNewMessage(event) {
         username: message.sender.card || message.sender.nickname,
         level: message.sender.role + " | 点击开合",
         avatar: 'https://q1.qlogo.cn/g?b=qq&nk=' + message.user_id + '&s=640',
+        user_id: message.user_id,
         id: message.real_id,
-        raw_json: message
     });
 
     ////////////////////////////////////////////////////////////
@@ -87,6 +103,8 @@ function ProcessNewMessage(event) {
             username: message.sender.card || message.sender.nickname,
             level: message.sender.role + " | 点击开合",
             avatar: 'https://q1.qlogo.cn/g?b=qq&nk=' + message.user_id + '&s=640',
+            user_id: message.user_id,
+            id: message.real_id,
         })
 };
 };
@@ -100,7 +118,6 @@ function switchChat(group_id) {
     const messagesContainer = document.getElementsByClassName('messages')[0];
     messagesContainer.innerHTML = '';
     const messages = message_list[group_id] || [];
-    console.log("此群消息：", messages, message_list, group_id);
     messages.forEach(message => {
         displayMessage(message);
     });
@@ -122,9 +139,13 @@ async function sendMessage() {
     const inputField = document.getElementById('message');
     const message = inputField.value;
     if (message) {
-        const password = 'your-custom-password'; // 自定义密码
-        const encryptedMessage = await encrypt(message, password);
-        sendToApi(0, encryptedMessage + "\n解密消息：" + await decrypt(encryptedMessage, password));
+        try {
+            await Api.SendGroupMessageHTTP(currentGroupId, message);
+        }
+        catch (error) {
+            console.error('获取自身信息失败:', error);
+        };
+
     }
 }
 
@@ -137,20 +158,20 @@ function displayMessage(message) {
 
             if (message.text[i].type == "text") {
                 message_html += message.text[i].data.text
-            };
+            }
 
 
-            if (message.text[i].type == "image") {
+            else if (message.text[i].type == "image") {
                 message_html += `<img id="group-image" src=${message.text[i].data.url} referrerpolicy="no-referrer">`
-            };
+            }
 
 
-            if (message.text[i].type == "face") {
+            else if (message.text[i].type == "face") {
                 message_html += `<img src="./src/faces/${message.text[i].data.id}.png" width="24px" referrerpolicy="no-referrer">`
-            };
+            }
 
 
-            if (message.text[i].type == "json") {
+            else if (message.text[i].type == "json") {
                 let json_card_info = JSON.parse(message.text[i].data.data);
                 message_html += `    <div class="json-card">
         <img src="${json_card_info.meta.detail_1.icon}" width="16px">
@@ -158,10 +179,17 @@ function displayMessage(message) {
         <div class="json-card-desc">${json_card_info.meta.detail_1.desc}</div>
         <img class="json-card-preview" src="https://${json_card_info.meta.detail_1.preview}" referrerpolicy="no-referrer" width="250px">
     </div>`;
-            };
+            }
 
+            else if (message.text[i].type == "file") {
+                message_html += `    <div class="json-card">
+        <span class="json-card-app-name">此文件以保存到晶格内网。</span>
+        <div>${message.text[i].data.file}<br><br>${Helper.DisplayFileSize(parseInt(message.text[i].data.file_size))}</div>
+        <img class="json-card-preview" src="" referrerpolicy="no-referrer" width="250px">
+    </div>`;
+            }
 
-            if (message.text[i].type == 'reply'){
+            else if (message.text[i].type == 'reply'){
                 // 回复消息只支持引用部分的text，image，face以及json/forward的消息提示
                 console.log("reply mesg");
                 message_html += `<div class="replybox">`;
@@ -174,17 +202,24 @@ function displayMessage(message) {
                     if (quoteMsg.text[i].type == "text") {
                         message_html += quoteMsg.text[i].data.text
                     }
-                    if (quoteMsg.text[i].type == "image") {
+                    else if (quoteMsg.text[i].type == "image") {
                         message_html += `<img id="group-image" src=${quoteMsg.text[i].data.url} referrerpolicy="no-referrer">`
                     }
-                    if (quoteMsg.text[i].type == "face") {
+                    else if (quoteMsg.text[i].type == "face") {
                         message_html += `<img src="./src/faces/${quoteMsg.text[i].data.id}.png" width="24px" referrerpolicy="no-referrer">`
                     }
-                    if (quoteMsg.text[i].type == "json") {
+                    else if (quoteMsg.text[i].type == "json") {
                         message_html += "[JSON卡片]";
                     }
-                    if (quoteMsg.text[i].type == "forward"){
+                    else if (quoteMsg.text[i].type == "forward"){
                         message_html += "[合并转发] 聊天记录";
+                    }
+                    else if (quoteMsg.text[i].type == "file"){
+                        message_html += "[文件] " + quoteMsg.text[i].data.file;
+                    }
+                    else
+                    {
+                        message_html += quoteMsg.text[i].type;
                     }
                     
                 };
@@ -209,18 +244,24 @@ function displayMessage(message) {
             }
 
 
-        const messageElement = document.createElement('div');
-        messageElement.className = 'message-item';
-        messageElement.innerHTML = `
-        <img class="avatar" src="${message.avatar}" width="24" height="24">
-        <span class="username">${message.username}<span class="level">${message.level}</span></span>
-        <div class="message-text">${message_html}</div>
-    `
-        messagesContainer.appendChild(messageElement);
-        if (isScrolledToBottom) {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        };
-    }
+
+    };
+    
+    const messageElement = document.createElement('div');
+    console.log('displaymsg', message.user_id, self_id);
+    messageElement.className = (message.user_id == self_id) ? 'message-item-self' : 'message-item';
+    messageElement.innerHTML = 
+    messageElement.innerHTML = (message.user_id == self_id) ? `
+    <img class="avatar" src="${message.avatar}" width="24" height="24">
+    <span class="level">${message.level}</span><span class="username">${message.username}</span>
+    <div class="message-text">${message_html}</div>` : `
+    <img class="avatar" src="${message.avatar}" width="24" height="24">
+    <span class="username">${message.username}<span class="level">${message.level}</span></span>
+    <div class="message-text">${message_html}</div>`
+    messagesContainer.appendChild(messageElement);
+    if (isScrolledToBottom) {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    };
     }
     else {
         console.error('无法找到 messages 容器');

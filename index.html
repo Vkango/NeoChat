@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="styles/group-info.css">
     <link rel="stylesheet" href="styles/connect-status.css">
     <link rel="stylesheet" href="styles/chatlist.css">
+    <link rel="stylesheet" href="styles/inputbox.css">
+    <link rel="stylesheet" href="styles/buttons.css">
+    
     <script type="module" src="scripts/app.js" defer></script>
 
 </head>
@@ -32,14 +35,14 @@
                 <img class="icon" src="src/icons/screenshot_16.svg" alt="expression">
             </div>
             <input type="text" id="message" placeholder="输入消息">
-            <button id="sendButton" onclick="sendMessage()" style="display: inline-block;">发送</button>
+            <button id="sendButton" style="display: inline-block;">发送</button>
         </div>
     </div>
 
 
 
     <div class="navi-bar">
-        <img class="avatar" src="src/avatar.jpg" alt="avatar" width="24" height="24">
+        <img class="avatar" id="self-avatar1" src="src/avatar.jpg" alt="avatar" width="24" height="24">
 
         <div class="navi-buttons">
             <img class="icon" src="src/icons/message_16.svg" alt="message">

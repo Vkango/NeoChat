@@ -65,10 +65,12 @@
 }
 .message-item-self
 {
-    position: relative;
+
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 44px;
+    padding-top: 10px;
 }
 .message-item-self .avatar
 {
@@ -81,25 +83,25 @@
 {
     display: inline-block;
     font-size: 16px;
-    font-weight: bold;
-    position: absolute;
+    position: relative;
     top: 0px;
-    right: 70px;
     font-weight: normal;
     color: rgba(255, 255, 255, 0.5);
+    right: 20px;
 }
 .message-item-self .level
 {
+    position: relative;
     display: inline-block;
     font-size: 14px;
     background-color: rgba(46, 157, 248, 0.2);
     border-radius: 3px;
     padding: 1px 5px;
-    margin-right: 10px;
     color: rgb(0, 101, 202);
-    top: -5px;
-
-
+    top: 0px;
+    margin-right: 10px;
+    height: fit-content;
+    right: 20px;
 
 }
 .message-text

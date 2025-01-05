@@ -13,7 +13,7 @@ export class API{
             body: JSON.stringify({ group_id: group_id, message: message }),
         })
         .then(response => response.json())
-        .then(data => console.log('API响应:', data))
+        .then(data => {console.log('API响应:', data); return data;})
         .catch(error => console.error('API错误:', error));
     };
     GetGroupInfo(group_id){
@@ -24,5 +24,38 @@ export class API{
                 no_cache: true
             }
         }))
+    };
+    async GetSelfInfo() {
+        try {
+            const response = await fetch(this.httpUrl + "/get_login_info", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            console.log('API响应:', data);
+            return data;
+        } catch (error) {
+            console.error('API错误:', error);
+            throw error;
+        }
+    };
+    async SendGroupMessageHTTP(group_id, msg) {
+        try {
+            const response = await fetch(this.httpUrl + "/send_group_msg", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ group_id: group_id, message: msg }),
+            });
+            const data = await response.json();
+            console.log('API响应:', data);
+            return data;
+        } catch (error) {
+            console.error('API错误:', error);
+            throw error;
+        }
     };
 };
